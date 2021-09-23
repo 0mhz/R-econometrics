@@ -1,0 +1,11 @@
+# Comments may or may not be added
+library(readr)
+DataSet <- read_csv("<PATH>")
+Idx<-order(DataSet$`@timestamp`)
+Sort<-DataSet[Idx,]
+Clean<-DataSet$bb.<MODULENAME>.exec_time[-c(1,2)]
+Mean = mean(Clean)
+paste("Mean:",sprintf(Mean, fmt = '%#.2f'))->MeanValueString
+plot(Clean, xlab="Measurement file index", ylab="Execution time (s)", main="Execution times with measurement data from <OBJECT>")
+abline(h=Mean, col="blue")
+text(Mean+16,Mean,MeanValueString, srt=0.2, pos=3, col="blue")
