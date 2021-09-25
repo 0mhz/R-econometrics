@@ -1,7 +1,7 @@
 library(readr)
 
 # Read dataset as comma separated value
-DataSet <- read_csv(<PATH>.csv")
+DataSet <- read_csv(<path>.csv")
 View(DataSet)
 
 # Sort dataset by timestamp
@@ -21,6 +21,6 @@ dsMean = mean(dsClean)
 paste("Mean:",sprintf(dsMean, fmt = '%#.2f'))->MeanValueStringDS
 
 # Plot graph
-plot(dsClean, xlab="Measurement file index", ylab="Execution time (s)", main="Execution times with measurement data from BSC Kirchberg")
+plot(dsClean, xlab="Measurement file index", ylab="Execution time (s)", main="Execution times with measurement data from <object>")
 abline(h=dsMean, col="blue", lwd=2)
 text(dsMean+16,dsMean,MeanValueStringDS,srt=0.2,pos=3,col = "blue")
