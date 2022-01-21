@@ -79,6 +79,7 @@ Or: |
 
 Not equal:  !=
 ```
+
 ---
  
 ### 2) Descriptive Statistics
@@ -212,8 +213,6 @@ Example: `chisq.test(cola$q4, cola$q2) `
 
 >#: If p=0, we are 100% sure that there is a relation
 >#: If p is large we fail to reject H0
-
-
  
 ---
 
