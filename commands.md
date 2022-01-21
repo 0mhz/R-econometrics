@@ -172,8 +172,7 @@ Example: ` plotmeans(cola$q5~cola$q1, p=0.95) displays the 95% confidence interv
 
 The tested H0 hypothesis is that the variable follows a normal law.
 
->#: Normally distributed. If p=0, we are 100% sure that they do not follow a normal law.
->#: Note: If there are more than 5000 objects then shapiro.test(ex[1:5000, k]) where k = column of the chosen variable 
+>#: Normally distributed. If p=0, we are 100% sure that they do not follow a normal law. If there are more than 5000 objects then shapiro.test(ex[1:5000, k]) where k = column of the chosen variable 
 
 **Test if the mean of a normally distributed variable equals a given number:** _t.test()_
 
