@@ -14,6 +14,10 @@ plotCI() # Draw the linear regression with confidence and prediction intervals
 qqPlot() # Compute the variance inflation factor
 vif() # Verify the normality hypothesis graphically
 ```
+#### Package: *FactoMineR*
+```
+PCA() # Perform a principal component analysis
+```
 #### Package: *gplots*
 ```
 plotmeans() # Draw the confidence intervals for the mean of a variable in different samlpes or groups
