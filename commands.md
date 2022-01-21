@@ -202,7 +202,7 @@ Example: ```  	kruskal.test(cola$q4~cola$q1) ```
 **Test if two variables are independent (khi-square independance test):** _chisq.test()_
 
 The tested H0 hypothesis is that the two variables are independent.
-Example: ```  	chisq.test(cola$q4, cola$q2) ```
+Example: `chisq.test(cola$q4, cola$q2) `
  
 ---
 
@@ -285,8 +285,11 @@ predict(reg,list(size=35))
 Example: ```  plotCI.reg(size,price, conf=0.97) ```
 
 **Compute the correlation coefficient:** _cor()_
-Example: ```  cor(size, price)  ```
+Example:
+```
+cor(size, price)
 cor(mtcars)
+```
 
 **Test if a correlation is significative:** _cor.test()_
 Example:
