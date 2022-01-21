@@ -97,7 +97,7 @@ Russia<-recode(Entity, '"Russia"=1; else=0;')
 ```
 #### 14) Draw a histogram of the variable GDP. Do you think that it follows a normal distribution?
 ```
-NULL
+hist(GDP)
 ```
 #### 15) Erase the last line of the dataset by two different methods.
 ```
