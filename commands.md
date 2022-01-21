@@ -172,6 +172,9 @@ Example: ` plotmeans(cola$q5~cola$q1, p=0.95) displays the 95% confidence interv
 
 The tested H0 hypothesis is that the variable follows a normal law.
 
+>#: Normally distributed. If p=0, we are 100% sure that they do not follow a normal law.
+>#: Note: If there are more than 5000 objects then shapiro.test(ex[1:5000, k]) where k = column of the chosen variable 
+
 **Test if the mean of a normally distributed variable equals a given number:** _t.test()_
 
 The tested H0 hypothesis is that the mean equals the given number.
@@ -186,6 +189,8 @@ Example: ```  	t.test(cola$q4, cola$q5) ```
 
 **Test if two variables, at least one of which is not normally distributed, have the same mean:** _wilcox.test()_
 
+>#: "Significant difference". If p=0, we are 100% sure that they are different.
+
 The tested H0 hypothesis is that the means are equal.
 Example: ```  wilcox.test(cola$q4, cola$q5) ```
 
@@ -196,6 +201,8 @@ Example: ```  	t.test(cola$q4~cola$q1) ```
 
 **Test if the mean of a non normal variable is the same in two (or more) different subgroups of the sample:** _kruskal.test()_
 
+>#: The same as the wilcox test but comparing only one variable to two different subgroups
+
 The tested H0 hypothesis is that the means are equal.
 Example: ```  	kruskal.test(cola$q4~cola$q1) ```
 
@@ -203,21 +210,36 @@ Example: ```  	kruskal.test(cola$q4~cola$q1) ```
 
 The tested H0 hypothesis is that the two variables are independent.
 Example: `chisq.test(cola$q4, cola$q2) `
+
+>#: If p=0, we are 100% sure that there is a relation
+>#: If p is large we fail to reject H0
+
+
  
 ---
 
 ### 4) Regression Analysis
 
+>#: Log reg model
+`reg<-lm(log(price)~log(size))`
+`price = exp(...)*size^(...)`
+
 **Define a linear regression model:** _lm()_
 Example: ```  reg<-lm(price~size) ```
+
+>#: `price = ... +/- ... * (size^2)`  
 
 **Define a multiple linear regression model:** _lm()_
 Example: ```  reg<-lm(price~size+localisation+age) ```
 
 **Define a quadratic regression model:** _lm()_
+>#: parabolic
 
 Example:
 ```  reg2<-lm(price~size+I(size^2)) (the I is necessary because inside a model definition * and ^ are just working inside I()) ```
+
+>#: `price = ... +/- ... * (size^2)`  
+
 
 **Testing a linear hypothesis:** _linearHypothesis() (needs the library car)_
 
@@ -249,8 +271,12 @@ points(prediction~semester, col="red ")
 Example: ```  legend("topright", c("SP500", "Ford"), col=c("red", "blue"), lty=1, cex=1.5) ```
 
 **Test if a more complicated model is better:** _anova()_
+
 Example: ```  anova(reg,reg2)    ```
+
 The H0 hypothesis is that the two models are equivalent.
+
+>#: If p=0, the two models are not equivalent.
 
 **Display the variance decomposition of a regression model:** _anova()_
 Example: ```  anova(reg)    ```
@@ -276,6 +302,8 @@ abline(h=c(-2,0,2),lty=c(2,1,2))
 
 **Compute previsions for the observations in a regression model:** _fitted()_
 Example: ```  fitted(reg) ```
+
+>#: _predicted_
 
 **Compute previsions for out of sample points:** _predict()_
 Example: ```  predict(reg,list(size=c(35,67,93))) ```
