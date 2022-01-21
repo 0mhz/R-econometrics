@@ -927,10 +927,10 @@ str(hprice1)
 2/sqrt(506)
 #All correlations larger (in absolute value) than 0.09 are significant.
 cor(hprice1)
-> **@A: cor(hprice1[,1:9])**
 #We can say that all the variables are significantly correlated to price.
 #I just realise that I must have made a mistake when creating the variable status.
 ```
+> **@A: cor(hprice1[,1:9])** That will include only quantitive variables
 #### 7) Perform a multiple regression to explain the median house prices as a function of the other original variables (variables 2 to 9). Exclude multicollinearity problems (do not keep variables with a if larger then 10) and variables which do not have enough explanatory power if necessary. How many variables do you exclude? How do you explain this? Which is the final model and how much of the variance of the median house prices does it explain?
 ```
 str(hprice1)
