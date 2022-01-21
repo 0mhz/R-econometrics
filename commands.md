@@ -350,31 +350,51 @@ Example: ```  dwtest(reg1) ```
 **Do a star graph:** _stars()_
 Example: ```  stars(auto[, 3:8], key.loc = c(14, 1.5)) ```
 
+> A1: `rownames(temp)<-City`
+
 **Perform a principal component analysis:** _PCA() (needs the library FactoMineR)_
-Example: ```  res.pca<-PCA(auto[,3:8], scale.unit=TRUE, ncp=6, graph=T)      ```
+> A2: Example: ```  res.pca<-PCA(auto[,3:8], scale.unit=TRUE, ncp=6, graph=T)      ```
 
 Here ncp=number of factors
+
 **To get the results of a PCA:**
-```
-res.pca$eig  give the eigenvalues of the principal components and the percentage of the explained variance
-res.pca$ind$coord gives the coordinates of the subjects with respect to the factors 
-res.pca$var$cor give the correlations between the variables and the factors
-```
+
+
+> A3: `res.pca$eig  give the eigenvalues of the principal components and the percentage of the explained variance`
+
+> The eigenvalues > 1 and the model has to explain 80%
+
+> A5: `res.pca$ind$coord gives the coordinates of the subjects with respect to the factors `
+
+> `temp<-cbind(temp,res.pca$ind$coord)`
+
+`res.pca$var$cor give the correlations between the variables and the factors` (*Strikethrough in notes*)
+
+> A6-A7: detach, attach
+
+> A8: plot(Dim.1,Dim.2) & text
 
 **Determine the number of principal components graphically:** _barplot()_
 Example: ```  barplot(res.pca$eig[,1])     ```
 
 **Interpret the principal components:** _dimdesc()_
-Example: ```  dimdesc(res.pca, axes=c(1:3))    analyses the first three dimensions ```
+> A4: Example: ```  dimdesc(res.pca, axes=c(1:3))    analyses the first three dimensions ```
+> Positive and negative correlations
 
-**Perform a cluster analysis:** _HCPC()_
-Example: ```  res.hcpc<-HCPC(res.pca) ```
+**Perform a cluster analysis:** _HCPC()_ (Hierarchical ascendant classification)
+> B1: Example: ```  res.hcpc<-HCPC(res.pca) ```
 
 **To get the result of a cluster analysis :**
-```
-res.hcpc$desc.var helps to give an interpretation of the clusters
-res.hcpc$data.clust  gives the file with a variable containing the group to which the subjects belong
-```
+
+> B2: `res.hcpc$desc.var helps to give an interpretation of the clusters` (Composure of each group)
+
+`res.hcpc$data.clust  gives the file with a variable containing the group to which the subjects belong`
+
+> B3: `str(res.hcpc$data.clust)  gives the file with a variable containing the group to which the subjects belong`
+
+> B4: `res.hcpc$data.clust[,lastvariable]->group`
+> B5: `temp<-cbind(temp, group)`
+> B6: `str(temp)`
 
 **Do a scatterplot with differently coloured subgroups:** _scatterplot()            (needs the library car)_
 Example: ```  scatterplot(Dim.2~Dim.1|Region, smooth=FALSE, regLine=FALSE)      ```
