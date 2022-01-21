@@ -745,9 +745,7 @@ lines(x,y, col="blue")
 
 ## Exercise sheet 6
 
-The excel file « currencies.xls » contains the conversion rate of the US$ for the Euro,
-the British Pound and the Yen from December 1998 to July 2018.
-We will try to forecast the conversion rate of the Euro.
+The excel file « currencies.xls » contains the conversion rate of the US$ for the Euro, the British Pound and the Yen from December 1998 to July 2018. We will try to forecast the conversion rate of the Euro.
 #### 1) Open the file and attach it to the working memory of R.
 ```
 library(readxl)
@@ -910,6 +908,7 @@ str(hprice1)
 status<-recode(lowstat, 'lowstat<12=1; else=0;')
 hprice1<-cbind(hprice1,status)
 ```
+> Correction: **status<-recode(lowstat, '0:11 =1; else=0;')**
 #### 4) Test if the variable price is normally distributed.
 ```
 shapiro.test(price)
@@ -921,6 +920,7 @@ kruskal.test(price~status)
 wilcox.test(price,status)
 #p=0 so we are 100% sure that H0 is wrong. The 2 variables are significantly different.
 ```
+> Apparently it is not correct to use both kruskal and wilcox tests. Its correct to use kruskal test only.
 #### 6) Give the correlation matrix of the quantitative variables. From which value upwards, the correlations are statistically significant? Which variables are significantly correlated to the median house price?
 ```
 str(hprice1)
@@ -930,7 +930,7 @@ cor(hprice1)
 #We can say that all the variables are significantly correlated to price.
 #I just realise that I must have made a mistake when creating the variable status.
 ```
-> **@A: cor(hprice1[,1:9])** That will include only quantitive variables
+> **@cor(hprice1[,1:9])** This will include quantitive variables only.
 #### 7) Perform a multiple regression to explain the median house prices as a function of the other original variables (variables 2 to 9). Exclude multicollinearity problems (do not keep variables with a if larger then 10) and variables which do not have enough explanatory power if necessary. How many variables do you exclude? How do you explain this? Which is the final model and how much of the variance of the median house prices does it explain?
 ```
 str(hprice1)
