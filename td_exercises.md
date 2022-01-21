@@ -869,3 +869,174 @@ lines(New$Date,predi$pred,col="red")
 lines(New$Date,New$predict,col="blue")
 lines(New$Date,New$prediction,col="green")
 ```
+
+---
+
+## Exercise sheet 7
+
+The file « hprice.csv » contains data about 506 residential areas in the US. The variables in the file are the following:
+```
+1. price: median housing price, $
+2. crime: crimes committed per capita in the area
+3. nox: nitrous oxide, parts per 100 mill
+4. rooms: avg number of rooms per house
+5. dist: weighted dist. to 5 employ centers
+6. radial: accessibiliy index to radial hghwys
+7. proptax: property tax per $1000
+8. stratio: average student-teacher ratio
+9. lowstat: % of people 'lower status'
+10. lprice: log(price)
+11. lnox: log(noX)
+12. lproptax: log(proptax)
+```
+#### Initialisation:
+```
+library(car)
+library(FactoMineR)
+hprice<-read.table("C:/R/hprice.csv",header=TRUE, sep=",")
+```
+#### 1) Open the file, attach it to the working memory of R and ask for its structure.
+```
+attach(hprice)
+str(hprice)
+```
+#### 2) Erase variables 10 to 12 from the dataset.
+```
+hprice1<-hprice[,-c(10,11,12)]
+str(hprice1)
+```
+#### 3) Create the variable status which has value 1 if lowstat is between 0 and 11 and value 0 if lowstat is larger than 11 and add it to the dataset.
+```
+status<-recode(lowstat, 'lowstat<12=1; else=0;')
+hprice1<-cbind(hprice1,status)
+```
+#### 4) Test if the variable price is normally distributed.
+```
+shapiro.test(price)
+#p=0, so we are 100% sure that the pricesare not normally distributed.
+```
+#### 5) Test if the average house prices are significantly different in areas with high and low status respectively.
+```
+kruskal.test(price~status)
+wilcox.test(price,status)
+#p=0 so we are 100% sure that H0 is wrong. The 2 variables are significantly different.
+```
+#### 6) Give the correlation matrix of the quantitative variables. From which value upwards, the correlations are statistically significant? Which variables are significantly correlated to the median house price?
+```
+str(hprice1)
+2/sqrt(506)
+#All correlations larger (in absolute value) than 0.09 are significant.
+cor(hprice1)
+> **@A: cor(hprice1[,1:9])**
+#We can say that all the variables are significantly correlated to price.
+#I just realise that I must have made a mistake when creating the variable status.
+```
+#### 7) Perform a multiple regression to explain the median house prices as a function of the other original variables (variables 2 to 9). Exclude multicollinearity problems (do not keep variables with a if larger then 10) and variables which do not have enough explanatory power if necessary. How many variables do you exclude? How do you explain this? Which is the final model and how much of the variance of the median house prices does it explain?
+```
+str(hprice1)
+reg1<-lm(price~crime+nox+rooms+dist+radial+proptax+stratio+lowstat)
+vif(reg1)
+#We already have all variance infaltion factors below 10. Thus we do not have multicolinearity problems.
+summary(reg1)
+#We can see that all the variables have enough explanatory power.
+#The model explains 71%.
+#The model equation is: price=41533.99-122.54*crime-1853.23*nox+4062.66*rooms-1231.39*dist+293.17*radial-122.36*proptax-1102.70*stratio-519.64*lowstat    
+```
+#### 8) Compute the standardized residuals of the linear model and add them to the data set.
+```
+res<-rstandard(reg1)
+hprice1<-cbind(hprice1,res)
+```
+#### 9) Define the subset "outliers" of all outliers to the regression model? How many are there?
+```
+outliers<-subset(hprice1, subset=((res>2)|(res< -2)))
+str(outliers)
+#We ave 24 outliers.
+```
+#### 10 Perform a linear and then an exponential simple regression model to explain the median house prices as a function of lowstat. Which of the 2 models is better?
+```
+#Linear model:
+#The Linear model equation is: price=41533.99-122.54*crime-1853.23*nox+4062.66*rooms-1231.39*dist+293.17*radial-122.36*proptax-1102.70*stratio-519.64*lowstat    
+#The model explains 71%.
+#Exponential Model:
+#Linear model:
+reg2<-lm(price~lowstat)
+summary(reg2)
+#The Linear model equation : price=34249.89-924.17*lowstat  
+#The model explains 52.8%.
+#Exponential Model
+reg3<-lm(log(price)~log(lowstat))
+summary(reg3)
+#The exponential model euqation is : ln(price)=11.256-0.554*ln(lowstat)
+#The model equation explains 66.8% . Thus the exponential model is the better one.
+#i.e: price=exp(11.256)*lowstat^(0.554)
+```
+#### 11) Draw a scatterplot of the house prices as a function of lowstat and add the 2 previous regression models in red and blue.
+```
+plot(lowstat,price)
+abline(reg1, col="red")
+abline(reg2, col="red")
+x<-0:40
+y<-exp(11.256)*x^(0.554)
+lines(x,y,col="blue")
+#I fogot ti put - in front of 0.554
+#Correction:
+#i.e: price=exp(11.256)*lowstat^(-0.554)
+y<-exp(11.256)*x^(-0.554)
+plot(lowstat,price)
+abline(reg2, col="red")
+x<-0:40
+y<-exp(11.256)*x^(-0.554)
+lines(x,y,col="blue")
+#Now the graph seems fine!
+```
+#### 12) Do a principal component analysis of the original variables (variables 1 to 9). How many components should we keep according to the 2 criteria seen in class? What would be your decision?
+```
+res.pca<-PCA(hprice1[,1:9], scale.unit=TRUE, ncp=9, graph=T)
+res.pca$eig
+#We have many eigenvalues larger than 1 and we need 3 factors to explain at least 80% of the data. We have here 79.4% which is close to 80%.
+#Thus we will take 4 principal components
+```
+#### 13) Give an interpretation of the 3 first principal components. Save the first three factors as variables and add them to the data file.
+```
+res.pca<-PCA(hprice1[,1:9], scale.unit=TRUE, ncp=3, graph=T)
+dimdesc(res.pca, axes=c(1:3))
+The first factor is positively correlated to proprety tax,to % of people with "low status" and negatively coerrelated to housing price.
+#The first factor is positively correlated to proprety tax,to % of people with "low status" and negatively coerrelated to housing price.
+#The second factor is defined the average number of roomes per house.
+#The third factor is defined by the average student-teacher ratio.
+hprice1<-cbind(hprice1,res.pca$ind$coord)
+str(hprice)
+detach(hprice1)
+str(hprice1)
+detach(hprice1)
+attach(hprice1)
+res.hcpc<-HCPC(res.pca)
+res.hcpc$desc.var  
+#Group 1 is defined by high prices and a high average number of rooms per house. 
+#Thus we can say it is a more richer area
+#The second group is defined by high weighted dist. to 5 employ centers.
+#The third group is a more poorer area, the % of people with a low status is high.
+#Since I've finished and I still got time I want to correct question 3.
+#I had : status<-recode(lowstat, 'lowstat<12=1; else=0;'), which did not work because when I did the crooelation I got NA under the variable status
+#I will try  with:
+status<-recode(lowstat, '0:11 =1; else=0;')
+kruskal.test(price~status)
+#Before when I first tried with kruskal it did not work, now it does
+#p=0, so we are 100% sure that there is a significant difference between the 2 variables.
+#I realised again I forgot to save the group membership question 14)
+str(res.hcpc$data.clust)  
+group<-res.hcpc$data.clust[,10] 
+hprice1<-cbind(hprice1,group)
+str(hprice1)
+```
+#### 14) Perform a hierarchical ascendant cluster analysis on the results of the above principal component analysis. Chose a 3 groups solution, give an interpretation of the groups, save the group membership of the data points and add them to the data file.
+```
+See answer above.
+```
+#### 15) Save the final version of the data file as excel file under the name "ex7.csv".
+```
+write.csv(hprice,file="C:/R/ex7.csv")
+write.csv(hprice1,file="C:/R/ex7.csv")
+```
+#### 16) Save your working history.
