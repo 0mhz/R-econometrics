@@ -1040,3 +1040,6 @@ write.csv(hprice,file="C:/R/ex7.csv")
 write.csv(hprice1,file="C:/R/ex7.csv")
 ```
 #### 16) Save your working history.
+```
+savehistory("path/to/file")
+```
