@@ -967,10 +967,13 @@ summary(reg2)
 #Exponential Model
 reg3<-lm(log(price)~log(lowstat))
 summary(reg3)
-#The exponential model euqation is : ln(price)=11.256-0.554*ln(lowstat)
+#The exponential model equation is : ln(price)=11.256-0.554*ln(lowstat)
 #The model equation explains 66.8% . Thus the exponential model is the better one.
 #i.e: price=exp(11.256)*lowstat^(0.554)
 ```
+> Correction:
+> #I fogot ti put - in front of 0.554
+> #i.e: price=exp(11.256)*lowstat^(-0.554)
 #### 11) Draw a scatterplot of the house prices as a function of lowstat and add the 2 previous regression models in red and blue.
 ```
 plot(lowstat,price)
