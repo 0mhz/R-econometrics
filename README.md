@@ -1,1 +1,1 @@
-A collection of exercises, algorithms and code snippets for R from university lectures and personal projects. Work in progress.
+An arbitrary collection of exercises, algorithms and code snippets for R and STATA from university lectures and personal projects.
